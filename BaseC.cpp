@@ -1,8 +1,12 @@
 #include "BaseC.h"
+#include "LogC.h"
+#include "SceneC.h"
+#include "MusicSceneC.h"
 #include <iostream>
 #include <vector>
 #include <memory>
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 
 // Default constructor
@@ -15,16 +19,17 @@ BaseC::BaseC() {
 
 // Destructor
 BaseC::~BaseC() {
-    // Cleanup
+    // Cleanup each scene
+    delete m_scenes.musicScene;
 }
 
 
 void BaseC::InitializeScenes(void){
-
-    //TODO
-
+    LogC log;
+    log.MakeLogEntry("Creating Music Scene...", LogC::LT_INFO);
+    m_scenes.musicScene = new MusicSceneC;
+    
     return;
-
 }
 
 
@@ -36,21 +41,14 @@ void BaseC::Process(std::vector<SDL_Event> &events, SDL_Renderer &renderer){
     SDL_RenderClear(&renderer);
 
     // Set draw color to background color and fill entire renderer area (app area)
-    SDL_SetRenderDrawColor(&renderer, 200, 200, 200, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(&renderer, 230, 230, 230, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRect(&renderer, NULL);
 
-    // Update position and logic for non-player game entities
-    // for(EntityC* entity : m_Entities){
-    //     entity->Update(deltaTime, events, keyboardState);
-    //     entity->Render(renderer);
-    // }
+    // Update scenes
+    m_scenes.musicScene->Update();
 
-    //MOUSE??? AUDIO???
-    
-
-    // Put the updated rendering of game objects on the newly-cleared screen
+    // Put the updated rendering of scenes on the newly-cleared screen
     SDL_RenderPresent(&renderer);
-
 
 
     return;

@@ -14,7 +14,8 @@ find_package(SDL3_image REQUIRED)
 find_package(SDL3_ttf REQUIRED)
 
 
-add_executable(SmallAudioSystem main.cpp ConstantDefs.h BaseC.h BaseC.cpp LogC.h LogC.cpp)
+add_executable(SmallAudioSystem main.cpp ConstantDefs.h BaseC.h BaseC.cpp LogC.h LogC.cpp
+SceneC.cpp SceneC.h MusicSceneC.cpp MusicSceneC.h)
 
 
 target_link_libraries(SmallAudioSystem PRIVATE 

@@ -24,7 +24,7 @@ LogC::~LogC() {
 void LogC::CloseLog(){
     std::lock_guard<std::mutex> lock(sm_logMutex);
     if(sm_filestream.is_open()){
-        sm_filestream << "Log file closing...\n";
+        sm_filestream << "Log file closing...\n\n";
         sm_filestream << std::flush;
         sm_filestream.close();
     }

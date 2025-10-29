@@ -3,6 +3,7 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_render.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <iostream>
 #include <stdio.h>
 #include <iomanip>
@@ -32,9 +33,19 @@ int main(){
         return SDL_APP_FAILURE;
     }
 
+    if (!TTF_Init()){
+        std::string errorMsg = SDL_GetError();
+        log.MakeLogEntry("Couldn't initialize TTF: " + errorMsg, LogC::LT_ERROR);
+        SDL_Quit();
+        return SDL_APP_FAILURE;
+    }
+
+    // Create window and renderer
     if (!SDL_CreateWindowAndRenderer("Explorer", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
         std::string errorMsg = SDL_GetError();
-        log.MakeLogEntry("Couldn't create window/renderer: " + errorMsg, LogC::LT_ERROR);
+        log.MakeLogEntry("Couldn't create window and/or renderer: " + errorMsg, LogC::LT_ERROR);
+        TTF_Quit();
+        SDL_Quit();
         return SDL_APP_FAILURE;
     }
 
@@ -95,6 +106,7 @@ int main(){
     // Close SDL renderer, window, and library when quit
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    TTF_Quit();
     SDL_Quit();
 
     return 0;
